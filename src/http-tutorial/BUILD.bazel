@@ -1,0 +1,26 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "http-tutorial_lib",
+    srcs = ["main.go"],
+    importpath = "http-test/src/http-tutorial",
+    visibility = ["//visibility:private"],
+    deps = ["@com_github_google_go_github_v68//github"],
+)
+
+go_binary(
+    name = "http-tutorial",
+    embed = [":http-tutorial_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "http-tutorial_test",
+    srcs = ["main_test.go"],
+    data = glob(["testdata/**"]),
+    embed = [":http-tutorial_lib"],
+    deps = [
+        "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
+    ],
+)
